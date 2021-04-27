@@ -2,13 +2,6 @@
 Wallet app
 """
 
-class InsufficientAmount(Exception):
-    """
-    Insufficient Amount in wallet
-    """
-    pass
-
-
 class Wallet:
     """
     Wallet class to add & spend cash
@@ -25,7 +18,7 @@ class Wallet:
         Spend cash
         """
         if self.balance < amount:
-            raise InsufficientAmount('Not enough available to spend {}'.format(amount))
+            raise Exception('Not enough available to spend {}'.format(amount))
         self.balance -= amount
 
     def add_cash(self, amount):

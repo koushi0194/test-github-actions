@@ -2,7 +2,7 @@
 Pytest for wallet app
 """
 import pytest
-from wallet import Wallet, InsufficientAmount
+from wallet import Wallet
 
 
 def test_default_initial_amount():
@@ -40,5 +40,5 @@ def test_wallet_spend_cash_raises_exception_on_insufficient_amount():
     Insufficient amount error
     """
     wallet = Wallet()
-    with pytest.raises(InsufficientAmount):
+    with pytest.raises(Exception):
         wallet.spend_cash(100)
