@@ -67,4 +67,4 @@ jobs:
 
     - name: test artifact
       run: |
-        ./wallet-app
+        ls
