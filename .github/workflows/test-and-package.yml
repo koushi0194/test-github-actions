@@ -19,7 +19,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: artifacts-${{ matrix.os }}
-          path: artifact/
+          path: src/build/
 
   # test:
   #   needs: build
@@ -46,7 +46,7 @@ jobs:
   #       cd src
   #       pytest 
 
-  Build-and-Push-Docker-Image:
+  test-artifact:
     strategy:
       matrix:
         python-version: [3.8]
@@ -65,9 +65,6 @@ jobs:
         path: public
     - name: Build container image
       uses: docker/build-push-action@v1
-      with:
-        username: ${{github.actor}}
-        password: ${{secrets.GITHUB_TOKEN}}
-        registry: docker.pkg.github.com
-        repository: koushi0194/github-actions-for-packages/test-action
-        tag_with_sha: true
+      run: |
+        pwd
+        ls
