@@ -65,7 +65,6 @@ jobs:
         name: artifacts-${{ matrix.os }}
         path: artifact-download
 
-    # - name: test artifact
-    #   run: |
-    #     pwd
-    #     ls
+    - name: test artifact
+      run: |
+        ./wallet-app
