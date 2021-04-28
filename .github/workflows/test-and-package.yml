@@ -51,19 +51,21 @@ jobs:
       matrix:
         python-version: [3.8]
         os: [macos-10.15, windows-2016]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: build
-    name: Docker Build, Tag, Push
+    name: test artifact
 
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+
     - name: Download built artifact
       uses: actions/download-artifact@main
       with:
         name: artifacts-${{ matrix.os }}
-        path: public
-    - name: test artifact
-      run: |
-        pwd
-        ls
+        path: artifact-download
+
+    # - name: test artifact
+    #   run: |
+    #     pwd
+    #     ls
