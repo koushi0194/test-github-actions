@@ -40,7 +40,9 @@ jobs:
         pip install pylint
         pip install pytest
     - name: Lint code with pylint
-      run: pylint src/*.py
+      run: |
+        cd src
+        pylint *.py
     - name: Run tests with pytest
       run: |
         cd src
