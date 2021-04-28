@@ -29,4 +29,3 @@ class Wallet:
 
 if __name__ == "__main__":
     print("This is your wallet")
-    cash_amount = input("Enter cash amount: ")

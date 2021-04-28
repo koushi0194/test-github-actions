@@ -25,7 +25,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.7, 3.8]
         os: [macos-10.15, windows-2016]
     runs-on: ${{ matrix.os }}
     steps:
@@ -49,10 +49,10 @@ jobs:
   test-artifact:
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.7, 3.8]
         os: [macos-10.15, windows-2016]
     runs-on: ${{ matrix.os }}
-    needs: build
+    needs: test
     name: test artifact
 
     steps:
