@@ -19,7 +19,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: artifacts-${{ matrix.os }}
-          path: src/build/
+          path: src/dist/
 
   # test:
   #   needs: build
@@ -70,5 +70,4 @@ jobs:
         cd artifact-download
         ls
         chmod 777 wallet-app
-        cd wallet-app
-        ls
+        ./wallet-app
