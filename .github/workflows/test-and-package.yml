@@ -17,7 +17,7 @@ jobs:
           pyinstaller wallet.py
       - uses: actions/upload-artifact@master
         with:
-          name: webpack artifacts
+          name: artifacts-${{ matrix.os }}
           path: ./dist/wallet
 
   test:
