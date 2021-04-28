@@ -1,5 +1,5 @@
 """
-Pytest for wallet app
+Pytest for wallet app.
 """
 import pytest
 from wallet import Wallet
