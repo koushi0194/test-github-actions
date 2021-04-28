@@ -13,12 +13,13 @@ jobs:
       - name: build with pyinstaller
         run: |
           pip3 install pyinstaller
+          cd src/
           pyinstaller -w --onefile wallet.py --name wallet-app
 
       - uses: actions/upload-artifact@master
         with:
           name: artifacts-${{ matrix.os }}
-          path: dist/
+          path: artifact/
 
   # test:
   #   needs: build
@@ -42,7 +43,8 @@ jobs:
   #     run: pylint *.py
   #   - name: Run tests with pytest
   #     run: |
-  #       pytest
+  #       cd src
+  #       pytest 
 
   Build-and-Push-Docker-Image:
     strategy:
