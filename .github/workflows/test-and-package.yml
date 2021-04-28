@@ -1,9 +1,6 @@
 name: Python package
 
-on:
-  push:
-    paths:
-      - "**Dockerfile**"
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,11 +14,12 @@ jobs:
       - name: build with pyinstaller
         run: |
           pip3 install pyinstaller
-          pyinstaller wallet.py
+          pyinstaller --onefile wallet.py --name wallet-app
+
       - uses: actions/upload-artifact@master
         with:
           name: artifacts-${{ matrix.os }}
-          path: ./dist/wallet
+          path: dist/
 
   test:
     runs-on: ubuntu-latest

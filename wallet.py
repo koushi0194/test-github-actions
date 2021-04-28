@@ -26,3 +26,7 @@ class Wallet:
         Add cash to wallet
         """
         self.balance += amount
+
+if __name__ == "__main__":
+    print("This is your wallet")
+    cash_amount = input("Enter cash amount: ")
