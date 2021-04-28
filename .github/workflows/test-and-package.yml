@@ -3,12 +3,11 @@ name: Python package
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
         os: [macos-10.15, windows-2016]
-
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - name: build with pyinstaller
@@ -22,13 +21,12 @@ jobs:
           path: dist/
 
   # test:
-  #   runs-on: ubuntu-latest
   #   needs: build
   #   strategy:
   #     matrix:
   #       python-version: [3.8]
   #       os: [macos-10.15, windows-2016]
-
+  #   runs-on: ${{ matrix.os }}
   #   steps:
   #   - uses: actions/checkout@v2
   #   - name: Set up Python ${{ matrix.python-version }}
@@ -46,24 +44,28 @@ jobs:
   #     run: |
   #       pytest
 
-  # Build-and-Push-Docker-Image:
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   name: Docker Build, Tag, Push
+  Build-and-Push-Docker-Image:
+    strategy:
+      matrix:
+        python-version: [3.8]
+        os: [macos-10.15, windows-2016]
+    runs-on: ${{ matrix.os }}
+    needs: build
+    name: Docker Build, Tag, Push
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v1
-  #   - name: Download built artifact
-  #     uses: actions/download-artifact@main
-  #     with:
-  #       name: artifacts-${{ matrix.os }}
-  #       path: public
-  #   - name: Build container image
-  #     uses: docker/build-push-action@v1
-  #     with:
-  #       username: ${{github.actor}}
-  #       password: ${{secrets.GITHUB_TOKEN}}
-  #       registry: docker.pkg.github.com
-  #       repository: koushi0194/github-actions-for-packages/test-action
-  #       tag_with_sha: true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Download built artifact
+      uses: actions/download-artifact@main
+      with:
+        name: artifacts-${{ matrix.os }}
+        path: public
+    - name: Build container image
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+        registry: docker.pkg.github.com
+        repository: koushi0194/github-actions-for-packages/test-action
+        tag_with_sha: true

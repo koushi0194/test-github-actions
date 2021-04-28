@@ -1,8 +1,8 @@
 # Your Dockerfile contents go here!
 FROM python:3.8.2
 
-WORKDIR /age-app
+WORKDIR /wallet-app
 
-COPY . ./app
+COPY ./ ./
 
 CMD ["python", "wallet.py"]
