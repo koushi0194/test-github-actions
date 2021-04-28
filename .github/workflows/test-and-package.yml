@@ -63,8 +63,7 @@ jobs:
       with:
         name: artifacts-${{ matrix.os }}
         path: public
-    - name: Build container image
-      uses: docker/build-push-action@v1
+    - name: test artifact
       run: |
         pwd
         ls
