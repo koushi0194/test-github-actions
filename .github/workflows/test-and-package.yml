@@ -70,4 +70,5 @@ jobs:
         cd artifact-download
         ls
         chmod 777 wallet-app
-        ./wallet-app
+        cd wallet-app
+        ls
