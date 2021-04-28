@@ -3,10 +3,10 @@ name: Python package
 on: [push]
 jobs:
   build:
-    runs-on: [macos-10.15, windows-2016]
     strategy:
       matrix:
         python-version: [3.8]
+        os: [ubuntu-lastest, windows-2016]
 
     steps:
       - uses: actions/checkout@v1
@@ -20,11 +20,11 @@ jobs:
           path: public/
 
   test:
-    runs-on: [macos-10.15, windows-2016]
     needs: build
     strategy:
       matrix:
         python-version: [3.7, 3.8]
+        os: [ubuntu-lastest, windows-2016]
 
     steps:
     - uses: actions/checkout@v2
