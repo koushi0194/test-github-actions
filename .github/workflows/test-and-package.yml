@@ -24,15 +24,23 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     
-    - name: Cache pip
-      uses: actions/cache@v2
-      id: myNewCache
-      if: startsWith(runner.os, 'macOS')
+    # - name: Cache pip
+    #   uses: actions/cache@v2
+    #   id: myNewCache
+    #   if: startsWith(runner.os, 'macOS')
+    #   with:
+    #     path: ~/Library/Caches/pip
+    #     key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pip-new-
+
+    - uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
       with:
-        path: ~/Library/Caches/pip
-        key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-new-
+        requirement_files: requirements.txt  # this is optional
+
+    - uses: syphar/restore-pip-download-cache@v1
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
     
     - name: Installing pip packages
       run: |
@@ -59,13 +67,16 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     
-    - uses: actions/cache@v2
-      id: myNewCache
-      with:
-        path: ~/Library/Caches/pip
-        key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-new-
+    # - uses: actions/cache@v2
+    #   id: myNewCache
+    #   with:
+    #     path: ~/Library/Caches/pip
+    #     key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pip-new-
+
+    - uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
 
     - name: check packages installed
       run: |
