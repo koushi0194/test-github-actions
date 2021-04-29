@@ -34,6 +34,7 @@ jobs:
           ${{ runner.os }}-pip-
     
     - name: Installing pip packages
+      if: 
       run: |
         pip install --upgrade pip
         pip install -r requirement.txt
@@ -63,7 +64,7 @@ jobs:
       id: myCache
       if: startsWith(runner.os, 'macOS')
       with:
-        path: ${{ matrix.path }}
+        path: ~/Library/Caches/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirement.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
