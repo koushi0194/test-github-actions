@@ -57,7 +57,7 @@ jobs:
     #   run: |
     #     pip install -r requirements.txt
   
-    - name: check packages installed
+    - name: check packages installed pylint
       run: |
         pip show pylint
 
