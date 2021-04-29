@@ -29,7 +29,7 @@ jobs:
       id: myNewCache
       if: startsWith(runner.os, 'macOS')
       with:
-        path: ${{ matrix.path }}
+        path: ~/Library/Caches/pip
         key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-new-
