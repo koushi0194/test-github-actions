@@ -70,6 +70,7 @@ jobs:
       - name: build with pyinstaller
         run: |
           pip3 install -r requirement.txt
+          cd src/
           pyinstaller -w --onefile wallet.py --name wallet-app
 
       - uses: actions/upload-artifact@master
