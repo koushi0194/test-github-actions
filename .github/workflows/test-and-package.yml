@@ -67,8 +67,8 @@ jobs:
       with:
         path: ~/Library/Caches/pip
         key: ${{ runner.os }}-pip-newCache-${{ hashFiles('**/requirement.txt') }}
-        # restore-keys: |
-        #   ${{ runner.os }}-pip-
+        restore-keys: |
+          ${{ runner.os }}-pip-newCache
 
     # - name: Installing pip packages
     #   run: |
