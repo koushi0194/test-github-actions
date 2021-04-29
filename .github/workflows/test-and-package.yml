@@ -32,8 +32,8 @@ jobs:
     - uses: actions/cache@master
       id: cache
       with:
-        # path: ${{ env.pythonLocation}}/lib/python3.8/site-packages/*
-        path: ~/Library/Caches/pip
+        path: ${{ env.pythonLocation}}/lib/python3.8/site-packages/*
+        # path: ~/Library/Caches/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
