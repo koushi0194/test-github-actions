@@ -67,9 +67,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-new-
 
-    - name: check which python
+    - name: check packages installed
       run: |
-        which python
+        pip list
 
     - name: Run tests with pytest
       run: |
