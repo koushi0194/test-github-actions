@@ -32,7 +32,7 @@ jobs:
         path: ${{ matrix.path }}
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirement.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-
+          ${{ runner.os }}-pipc-
     
     - name: Installing pip packages
       # if: steps.myCache.outputs.cache-hit != true
@@ -68,7 +68,7 @@ jobs:
         path: ~/Library/Caches/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirement.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-
+          ${{ runner.os }}-pipc-
 
     # - name: Installing pip packages
     #   run: |
