@@ -64,7 +64,7 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       with:
         path: ${{ matrix.path }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirement.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
 
