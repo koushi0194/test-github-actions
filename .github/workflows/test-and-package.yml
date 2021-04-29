@@ -55,6 +55,10 @@ jobs:
     # - name: Installing pip packages
     #   run: |
     #     pip install -r requirements.txt
+  
+    - name: check packages installed
+      run: |
+        pip show pylint
 
     - name: Lint code with pylint
       run: |
