@@ -67,9 +67,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-new-
 
-    # - name: Installing pip packages
-    #   run: |
-    #     pip install --upgrade pip
+    - name: check which python
+      run: |
+        which python
 
     - name: Run tests with pytest
       run: |
