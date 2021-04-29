@@ -28,8 +28,8 @@ jobs:
       id: myCache
       if: startsWith(runner.os, 'macOS')
       with:
-        path: ~/Library/Caches/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        path: ${{ matrix.path }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirement.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     
@@ -63,14 +63,14 @@ jobs:
       id: myCache
       if: startsWith(runner.os, 'macOS')
       with:
-        path: ~/Library/Caches/pip
+        path: ${{ matrix.path }}
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
 
-    - name: Installing pip packages
-      run: |
-        pip install --upgrade pip
+    # - name: Installing pip packages
+    #   run: |
+    #     pip install --upgrade pip
 
     - name: Run tests with pytest
       run: |
