@@ -81,7 +81,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-        os: os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     needs: build
     name: test artifact
