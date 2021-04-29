@@ -1,6 +1,6 @@
 name: Python package
 
-on: [push, pull_request]
+on: [push]
 jobs:
   build:
     strategy:
@@ -47,6 +47,10 @@ jobs:
       run: |
         cd src
         pytest 
+    - name: Run code
+      run: |
+        cd src
+        python wallet.py 
 
   test-artifact:
     strategy:
