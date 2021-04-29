@@ -26,7 +26,7 @@ jobs:
     
     - name: Cache pip
       uses: actions/cache@v2
-      id: myCache
+      id: myCachestep
       if: startsWith(runner.os, 'macOS')
       with:
         path: ${{ matrix.path }}
@@ -62,7 +62,7 @@ jobs:
     #     python-version: ${{ matrix.python-version }}
     
     - uses: actions/cache@v2
-      id: myCache
+      id: myCachestep
       if: startsWith(runner.os, 'macOS')
       with:
         path: ~/Library/Caches/pip
