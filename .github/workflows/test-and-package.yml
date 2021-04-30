@@ -9,7 +9,7 @@ jobs:
     name: Create Virtual environment for the provided os & python versions
     strategy:
         matrix:
-          python-version: [3.8]
+          python-version: [3.7, 3.8]
           os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -68,7 +68,7 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.7, 3.8]
     runs-on: macos-latest
     steps:
     - name: Checkout
