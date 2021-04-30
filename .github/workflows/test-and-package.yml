@@ -2,14 +2,27 @@ name: Python package
 
 on: [pull_request]
 jobs:
+  create_venv:
+    strategy:
+        matrix:
+          python-version: [3.8]
+          os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    - uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
+
+    - uses: syphar/restore-pip-download-cache@v1
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+    - run: pip install -r requirements.txt
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
   lint:
     strategy:
         matrix:
           python-version: [3.8]
-          os: [macos-latest]
-
-    runs-on: ${{ matrix.os }}
-
+    runs-on: macos-latest
+    needs: create_venv
     steps:
     - name: Checkout
       uses: actions/checkout@v1
@@ -19,43 +32,14 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     
-    # - name: Cache pip
-    #   uses: actions/cache@v2
-    #   id: myNewCache
-    #   if: startsWith(runner.os, 'macOS')
-    #   with:
-    #     path: ~/Library/Caches/pip
-    #     key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-pip-new-
-    
-    - uses: actions/cache@master
-      id: cache
-      with:
-        # path: ${{ env.pythonLocation}}/lib/python3.8/site-packages/*
-        path: ~/Library/Caches/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          ${{ runner.os }}-
-    
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
         echo "Installing dependencies and caching them."
         pip install -r requirements.txt
 
-    # - uses: syphar/restore-virtualenv@v1
-    #   id: cache-virtualenv
-    #   with:
-    #     requirement_files: requirements.txt
-
-    # - uses: syphar/restore-pip-download-cache@v1
-    #   if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-    
-    # - name: Installing pip packages
-    #   run: |
-    #     pip install -r requirements.txt
+    - uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
   
     - name: check packages installed pylint
       run: |
@@ -77,30 +61,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    
-    # - uses: actions/cache@v2
-    #   id: myNewCache
+    # - name: Set up Python ${{ matrix.python-version }}
+    #   uses: actions/setup-python@v1
     #   with:
-    #     path: ~/Library/Caches/pip
-    #     key: ${{ runner.os }}-pip-new-${{ hashFiles('**/requirement.txt') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-pip-new-
+    #     python-version: ${{ matrix.python-version }}
 
-    - uses: actions/cache@master
-      id: cache
-      with:
-        path: ~/Library/Caches/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          ${{ runner.os }}-
-
-    # - uses: syphar/restore-virtualenv@v1
-    #   id: cache-virtualenv
+    - uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
 
     - name: check packages installed
       run: |
@@ -126,12 +93,15 @@ jobs:
   #   runs-on: ${{ matrix.os }}
   #   steps:
   #     - uses: actions/checkout@v1
+
   #     - name: Set up Python ${{ matrix.python-version }}
   #       uses: actions/setup-python@v1
   #       with:
   #         python-version: ${{ matrix.python-version }}
+
   #     - uses: syphar/restore-virtualenv@v1
   #       id: cache-virtualenv
+
   #     - name: build with pyinstaller
   #       run: |
   #         cd src/
@@ -150,7 +120,6 @@ jobs:
   #   runs-on: ${{ matrix.os }}
   #   needs: build
   #   name: test artifact
-
   #   steps:
   #   - name: Download built artifact
   #     uses: actions/download-artifact@main
