@@ -8,6 +8,7 @@ jobs:
           python-version: [3.8]
           os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    steps:
     - uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
 
