@@ -1,8 +1,12 @@
-name: Python package
+name: Lint - Test - Artifact - Test Artifact
 
-on: [pull_request]
+on: 
+  pull_request:
+    branches: [main]
+
 jobs:
   create_venv:
+    name: Create Virtual environment for the provided os & python versions
     strategy:
         matrix:
           python-version: [3.8]
@@ -10,10 +14,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
     - uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
       with:
@@ -129,8 +135,8 @@ jobs:
     needs: build
     name: test artifact
     steps:
-    - uses: syphar/restore-virtualenv@v1
-      id: cache-virtualenv
+    # - uses: syphar/restore-virtualenv@v1
+    #   id: cache-virtualenv
 
     - name: Download built artifact
       uses: actions/download-artifact@main
