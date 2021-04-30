@@ -69,7 +69,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-
     runs-on: macos-latest
     steps:
     - name: Checkout
@@ -98,12 +97,12 @@ jobs:
         python wallet.py 
 
   build:
+    name: Upload executable as artifact
     needs: test
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.7, 3.8]
         os: [macos-latest, windows-latest]
-
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
@@ -127,17 +126,14 @@ jobs:
           path: src/dist/
 
   test-artifact:
+    name: test uploaded artifact
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.7, 3.8]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     needs: build
-    name: test artifact
     steps:
-    # - uses: syphar/restore-virtualenv@v1
-    #   id: cache-virtualenv
-
     - name: Download built artifact
       uses: actions/download-artifact@main
       with:
