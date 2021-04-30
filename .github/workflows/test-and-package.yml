@@ -101,7 +101,7 @@ jobs:
     needs: test
     strategy:
       matrix:
-        python-version: [3.5, 3.8]
+        python-version: [3.7, 3.8]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -129,7 +129,7 @@ jobs:
     name: test uploaded artifact
     strategy:
       matrix:
-        python-version: [3.5, 3.8]
+        python-version: [3.7, 3.8]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     needs: build
