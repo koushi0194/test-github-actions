@@ -20,7 +20,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - uses: syphar/restore-virtualenv@v1
+    - name: Restore virtual env
+      uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
       with:
         requirement_files: requirements.txt
@@ -28,10 +29,12 @@ jobs:
     - uses: syphar/restore-pip-download-cache@v1
       if: steps.cache-virtualenv.outputs.cache-hit != 'true'
 
-    - run: pip install -r requirements.txt
+    - name: Install pip requirements
+      run: pip install -r requirements.txt
       if: steps.cache-virtualenv.outputs.cache-hit != 'true'
 
   lint:
+    name: Lint code using pylint
     strategy:
         matrix:
           python-version: [3.8]
@@ -46,12 +49,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - uses: syphar/restore-virtualenv@v1
+    - name: Restore virtual env
+      uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
-  
-    - name: check packages installed pylint
-      run: |
-        pip show pylint
 
     - name: Lint code with pylint
       run: |
@@ -59,6 +59,7 @@ jobs:
         pylint wallet.py
 
   test:
+    name: Test code using pytest
     needs: lint
     strategy:
       matrix:
@@ -76,10 +77,6 @@ jobs:
     - uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
 
-    - name: check packages installed
-      run: |
-        pip show pytest
-
     - name: Run tests with pytest
       run: |
         cd src
@@ -91,7 +88,7 @@ jobs:
         python wallet.py 
 
   build:
-    name: Upload executable as artifact
+    name: Upload executable to artifact OS-${{ matrix.os }} python-${{ matrix.python-version }}
     needs: test
     strategy:
       matrix:
@@ -106,7 +103,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: syphar/restore-virtualenv@v1
+      - name: Restore virtual env
+        uses: syphar/restore-virtualenv@v1
         id: cache-virtualenv
 
       - name: build with pyinstaller
@@ -120,7 +118,7 @@ jobs:
           path: src/dist/
 
   test-artifact:
-    name: test uploaded artifact
+    name: testing executable OS-${{ matrix.os }} python-${{ matrix.python-version }}
     strategy:
       matrix:
         python-version: [3.6, 3.8]
