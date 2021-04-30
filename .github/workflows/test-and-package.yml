@@ -6,11 +6,11 @@ on:
 
 jobs:
   create_venv:
-    name: Create Virtual environment for the provided os & python versions
     strategy:
         matrix:
           python-version: [3.7, 3.8]
           os: [macos-latest, windows-latest]
+    name: Create venv python-${{ matrix.python-version }} OS-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
@@ -68,7 +68,7 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.8]
     runs-on: macos-latest
     steps:
     - name: Checkout
@@ -101,7 +101,7 @@ jobs:
     needs: test
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.5, 3.8]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -129,7 +129,7 @@ jobs:
     name: test uploaded artifact
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.5, 3.8]
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     needs: build
