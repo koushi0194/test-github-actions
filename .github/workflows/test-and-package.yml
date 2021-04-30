@@ -8,7 +8,7 @@ jobs:
   create_venv:
     strategy:
         matrix:
-          python-version: [3.7, 3.8]
+          python-version: [3.8]
           os: [macos-latest, windows-latest]
     name: Create venv python-${{ matrix.python-version }} OS-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -41,16 +41,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
+    # - name: Set up Python ${{ matrix.python-version }}
+    #   uses: actions/setup-python@v1
+    #   with:
+    #     python-version: ${{ matrix.python-version }}
     
-    - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: |
-        echo "Installing dependencies and caching them."
-        pip install -r requirements.txt
+    # - name: Install Dependencies
+    #   if: steps.cache.outputs.cache-hit != 'true'
+    #   run: |
+    #     echo "Installing dependencies and caching them."
+    #     pip install -r requirements.txt
 
     - uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
@@ -62,86 +62,86 @@ jobs:
     - name: Lint code with pylint
       run: |
         cd src
-        pylint '*.py'
+        pylint wallet.py
 
-  test:
-    needs: lint
-    strategy:
-      matrix:
-        python-version: [3.8]
-    runs-on: macos-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+  # test:
+  #   needs: lint
+  #   strategy:
+  #     matrix:
+  #       python-version: [3.8]
+  #   runs-on: macos-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v1
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
+  #   - name: Set up Python ${{ matrix.python-version }}
+  #     uses: actions/setup-python@v1
+  #     with:
+  #       python-version: ${{ matrix.python-version }}
 
-    - uses: syphar/restore-virtualenv@v1
-      id: cache-virtualenv
+  #   - uses: syphar/restore-virtualenv@v1
+  #     id: cache-virtualenv
 
-    - name: check packages installed
-      run: |
-        pip show pytest
+  #   - name: check packages installed
+  #     run: |
+  #       pip show pytest
 
-    - name: Run tests with pytest
-      run: |
-        cd src
-        pytest
+  #   - name: Run tests with pytest
+  #     run: |
+  #       cd src
+  #       pytest
 
-    - name: Run code
-      run: |
-        cd src
-        python wallet.py 
+  #   - name: Run code
+  #     run: |
+  #       cd src
+  #       python wallet.py 
 
-  build:
-    name: Upload executable as artifact
-    needs: test
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8]
-        os: [macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v1
+  # build:
+  #   name: Upload executable as artifact
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       python-version: [3.8]
+  #       os: [macos-latest, windows-latest]
+  #   runs-on: ${{ matrix.os }}
+  #   steps:
+  #     - uses: actions/checkout@v1
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
+  #     - name: Set up Python ${{ matrix.python-version }}
+  #       uses: actions/setup-python@v1
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
 
-      - uses: syphar/restore-virtualenv@v1
-        id: cache-virtualenv
+  #     - uses: syphar/restore-virtualenv@v1
+  #       id: cache-virtualenv
 
-      - name: build with pyinstaller
-        run: |
-          cd src/
-          pyinstaller -w --onefile wallet.py --name wallet-app
+  #     - name: build with pyinstaller
+  #       run: |
+  #         cd src/
+  #         pyinstaller -w --onefile wallet.py --name wallet-app
 
-      - uses: actions/upload-artifact@master
-        with:
-          name: artifacts-${{ matrix.os }}
-          path: src/dist/
+  #     - uses: actions/upload-artifact@master
+  #       with:
+  #         name: artifacts-${{ matrix.os }}
+  #         path: src/dist/
 
-  test-artifact:
-    name: test uploaded artifact
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8]
-        os: [macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    needs: build
-    steps:
-    - name: Download built artifact
-      uses: actions/download-artifact@main
-      with:
-        name: artifacts-${{ matrix.os }}
-        path: artifact-download
+  # test-artifact:
+  #   name: test uploaded artifact
+  #   strategy:
+  #     matrix:
+  #       python-version: [3.8]
+  #       os: [macos-latest, windows-latest]
+  #   runs-on: ${{ matrix.os }}
+  #   needs: build
+  #   steps:
+  #   - name: Download built artifact
+  #     uses: actions/download-artifact@main
+  #     with:
+  #       name: artifacts-${{ matrix.os }}
+  #       path: artifact-download
 
-    - name: test artifact
-      run: |
-        cd artifact-download
-        chmod 777 wallet-app
-        ./wallet-app
+  #   - name: test artifact
+  #     run: |
+  #       cd artifact-download
+  #       chmod 777 wallet-app
+  #       ./wallet-app
