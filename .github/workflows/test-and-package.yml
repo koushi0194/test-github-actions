@@ -120,23 +120,26 @@ jobs:
           name: artifacts-${{ matrix.os }}
           path: src/dist/
 
-  # test-artifact:
-  #   strategy:
-  #     matrix:
-  #       python-version: [3.8]
-  #       os: [macos-latest, windows-latest]
-  #   runs-on: ${{ matrix.os }}
-  #   needs: build
-  #   name: test artifact
-  #   steps:
-  #   - name: Download built artifact
-  #     uses: actions/download-artifact@main
-  #     with:
-  #       name: artifacts-${{ matrix.os }}
-  #       path: artifact-download
+  test-artifact:
+    strategy:
+      matrix:
+        python-version: [3.8]
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    needs: build
+    name: test artifact
+    steps:
+    - uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+        
+    - name: Download built artifact
+      uses: actions/download-artifact@main
+      with:
+        name: artifacts-${{ matrix.os }}
+        path: artifact-download
 
-  #   - name: test artifact
-  #     run: |
-  #       cd artifact-download
-  #       chmod 777 wallet-app
-  #       ./wallet-app
+    - name: test artifact
+      run: |
+        cd artifact-download
+        chmod 777 wallet-app
+        ./wallet-app
