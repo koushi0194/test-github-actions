@@ -62,7 +62,7 @@ jobs:
     - name: Lint code with pylint
       run: |
         cd src
-        pylint wallet.py
+        pylint '*.py'
 
   test:
     needs: lint
