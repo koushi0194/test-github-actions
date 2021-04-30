@@ -84,41 +84,41 @@ jobs:
     - name: Run tests with pytest
       run: |
         cd src
-        pytest wallet.py
+        pytest
 
     - name: Run code
       run: |
         cd src
         python wallet.py 
 
-  # build:
-  #   needs: test
-  #   strategy:
-  #     matrix:
-  #       python-version: [3.8]
-  #       os: [macos-latest, windows-latest]
+  build:
+    needs: test
+    strategy:
+      matrix:
+        python-version: [3.8]
+        os: [macos-latest, windows-latest]
 
-  #   runs-on: ${{ matrix.os }}
-  #   steps:
-  #     - uses: actions/checkout@v1
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
 
-  #     - name: Set up Python ${{ matrix.python-version }}
-  #       uses: actions/setup-python@v1
-  #       with:
-  #         python-version: ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
 
-  #     - uses: syphar/restore-virtualenv@v1
-  #       id: cache-virtualenv
+      - uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
 
-  #     - name: build with pyinstaller
-  #       run: |
-  #         cd src/
-  #         pyinstaller -w --onefile wallet.py --name wallet-app
+      - name: build with pyinstaller
+        run: |
+          cd src/
+          pyinstaller -w --onefile wallet.py --name wallet-app
 
-  #     - uses: actions/upload-artifact@master
-  #       with:
-  #         name: artifacts-${{ matrix.os }}
-  #         path: src/dist/
+      - uses: actions/upload-artifact@master
+        with:
+          name: artifacts-${{ matrix.os }}
+          path: src/dist/
 
   # test-artifact:
   #   strategy:
