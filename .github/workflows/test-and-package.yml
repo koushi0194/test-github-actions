@@ -9,7 +9,7 @@ jobs:
     strategy:
         matrix:
           python-version: [3.8]
-          os: [macos-latest, windows-latest]
+          os: [macos-latest]
     name: Create venv python-${{ matrix.python-version }} OS-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -41,16 +41,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    # - name: Set up Python ${{ matrix.python-version }}
-    #   uses: actions/setup-python@v1
-    #   with:
-    #     python-version: ${{ matrix.python-version }}
-    
-    # - name: Install Dependencies
-    #   if: steps.cache.outputs.cache-hit != 'true'
-    #   run: |
-    #     echo "Installing dependencies and caching them."
-    #     pip install -r requirements.txt
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
 
     - uses: syphar/restore-virtualenv@v1
       id: cache-virtualenv
