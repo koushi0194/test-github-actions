@@ -32,9 +32,15 @@ jobs:
           - os: windows-latest
             OUT_FILE_NAME: windows-exe
     steps:
-      - uses: actions/download-artifact@v1
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v2
         with:
-          name: ${{ matrix.OUT_FILE_NAME}}
+          python-version: '3.7'
+      - name: Restore cache
+        uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
       - name: Run code
         run: |
           pip install psutil
