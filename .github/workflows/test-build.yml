@@ -52,21 +52,21 @@ jobs:
         name: ${{ matrix.OUT_FILE_NAME}}
         path: src/dist/
 
-  test-packages-on-platform:
-    needs: create-packages
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: windows-latest
-            OUT_FILE_NAME: windows-exe
-    steps:
-      - uses: actions/download-artifact@v1
-        with:
-          name: ${{ matrix.OUT_FILE_NAME}}
-      - name: Run Windows executable
-        run: |
-          cd ${{ matrix.OUT_FILE_NAME}}
-          ls
-          chmod 777 wallet-app
-          ./wallet-app
+#   test-packages-on-platform:
+#     needs: create-packages
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         include:
+#           - os: windows-latest
+#             OUT_FILE_NAME: windows-exe
+#     steps:
+#       - uses: actions/download-artifact@v1
+#         with:
+#           name: ${{ matrix.OUT_FILE_NAME}}
+#       - name: Run Windows executable
+#         run: |
+#           cd ${{ matrix.OUT_FILE_NAME}}
+#           ls
+#           chmod 777 wallet-app
+#           ./wallet-app
