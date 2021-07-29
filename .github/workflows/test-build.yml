@@ -44,6 +44,7 @@ jobs:
       id: cache-virtualenv
     - name: Run Pyinstaller
       run: |
+        pip install psutil
         cd src/
         pyinstaller -w --onefile wallet.py --name wallet-app
     - uses: actions/upload-artifact@v2
