@@ -44,22 +44,27 @@ def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
     no_of_process = multiprocessing.cpu_count() * 4
     print('mp count', no_of_process)
     ps_count = psutil.cpu_count(logical=False)
-    print('ps_count', ps_count)
-#     the_queue = multiprocessing.Queue()
-#     the_pool = multiprocessing.Pool(
-#         no_of_process,
-#         mp_queue, (the_queue,))
-#     for i in range(len(copy_cmd_list)):
-#         the_queue.put(copy_cmd_list[i])
-#     for i in range(no_of_process):
-#         the_queue.put(None)
-#     # prevent adding anything more to the queue and wait for queue to empty
-#     the_queue.close()
-#     the_queue.join_thread()
-#     # prevent adding anything more to the process pool
-#     #      and wait for all processes to finish
-#     the_pool.close()
-#     the_pool.join()
+    ps_count_l = psutil.cpu_count(logical=True)
+    print('ps_count_logical', ps_count_l)
+    no_of_process = ps_count
+    print('the queue')
+    the_queue = multiprocessing.Queue()
+    print('the pool')
+    the_pool = multiprocessing.Pool(
+        no_of_process,
+        mp_queue, (the_queue,))
+    print('the commands')
+    for i in range(len(copy_cmd_list)):
+        the_queue.put(copy_cmd_list[i])
+    for i in range(no_of_process):
+        the_queue.put(None)
+    # prevent adding anything more to the queue and wait for queue to empty
+    the_queue.close()
+    the_queue.join_thread()
+    # prevent adding anything more to the process pool
+    #      and wait for all processes to finish
+    the_pool.close()
+    the_pool.join()
 
 
 def exec_os_cmd(cmd: str) -> bytes:
@@ -69,9 +74,11 @@ def exec_os_cmd(cmd: str) -> bytes:
     Returns:
         (bytes)stdout: Command Output
     """
+    print('executing command')
     p = subprocess.Popen(["powershell.exe", cmd], shell=True,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = p.communicate()
+    print('finished executing command')
     if len(stderr) == 0:
         return stdout
     else:
