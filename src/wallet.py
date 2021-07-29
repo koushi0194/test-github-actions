@@ -33,6 +33,7 @@
 import multiprocessing
 import subprocess
 import sys
+import psutil
 
 
 def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
@@ -41,7 +42,9 @@ def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
         cmd (list): Robocopy command to migrate shares
     """
     no_of_process = multiprocessing.cpu_count() * 4
-    print(no_of_process)
+    print('mp count', no_of_process)
+    ps_count = psutil.cpu_count(logical=False)
+    print('ps_count', ps_count)
 #     the_queue = multiprocessing.Queue()
 #     the_pool = multiprocessing.Pool(
 #         no_of_process,
