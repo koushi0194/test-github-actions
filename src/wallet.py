@@ -33,6 +33,7 @@
 import multiprocessing
 import subprocess
 import sys
+import psutil
 
 
 def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
@@ -43,10 +44,10 @@ def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
     #no_of_process_mp = multiprocessing.cpu_count() * 4
     #print('mp count', no_of_process_mp)
     #ps_count = psutil.cpu_count(logical=False)
-    #ps_count_l = psutil.cpu_count(logical=True)
+    ps_count_l = psutil.cpu_count(logical=True)
     #print('ps_count', ps_count)
     #print('ps_count_logical', ps_count_l)
-    no_of_process = 4
+    no_of_process = ps_count_
     print('the queue')
     the_queue = multiprocessing.Queue()
     print('the pool')
