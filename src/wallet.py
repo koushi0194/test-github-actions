@@ -51,6 +51,7 @@ def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
     print('the queue')
     the_queue = multiprocessing.Queue()
     print('the pool')
+    print('no of process', no_of_process)
     the_pool = multiprocessing.Pool(
         no_of_process,
         mp_queue, (the_queue,))
