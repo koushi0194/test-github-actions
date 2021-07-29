@@ -42,21 +42,21 @@ def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
     """
     no_of_process = multiprocessing.cpu_count() * 4
     print(no_of_process)
-    the_queue = multiprocessing.Queue()
-    the_pool = multiprocessing.Pool(
-        no_of_process,
-        mp_queue, (the_queue,))
-    for i in range(len(copy_cmd_list)):
-        the_queue.put(copy_cmd_list[i])
-    for i in range(no_of_process):
-        the_queue.put(None)
-    # prevent adding anything more to the queue and wait for queue to empty
-    the_queue.close()
-    the_queue.join_thread()
-    # prevent adding anything more to the process pool
-    #      and wait for all processes to finish
-    the_pool.close()
-    the_pool.join()
+#     the_queue = multiprocessing.Queue()
+#     the_pool = multiprocessing.Pool(
+#         no_of_process,
+#         mp_queue, (the_queue,))
+#     for i in range(len(copy_cmd_list)):
+#         the_queue.put(copy_cmd_list[i])
+#     for i in range(no_of_process):
+#         the_queue.put(None)
+#     # prevent adding anything more to the queue and wait for queue to empty
+#     the_queue.close()
+#     the_queue.join_thread()
+#     # prevent adding anything more to the process pool
+#     #      and wait for all processes to finish
+#     the_pool.close()
+#     the_pool.join()
 
 
 def exec_os_cmd(cmd: str) -> bytes:
