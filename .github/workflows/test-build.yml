@@ -48,50 +48,50 @@ jobs:
           python wallet.py 
 
 
-#   create-packages:
-#     needs: create-virtualenv-windows
-#     runs-on: ${{ matrix.os }}
-#     strategy:
-#       matrix:
-#         include:
-#           - os: windows-latest
-#             OUT_FILE_NAME: windows-exe
-#             ARTIFACT_PATH: dist/
-#     steps:
-#     - name: Checkout the code
-#       uses: actions/checkout@v2
-#     - name: Install Python
-#       uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.7'
-#     - name: Restore cache
-#       uses: syphar/restore-virtualenv@v1
-#       id: cache-virtualenv
-#     - name: Run Pyinstaller
-#       run: |
-#         pip install psutil
-#         cd src/
-#         pyinstaller -w --onefile wallet.py --name wallet-app
-#     - uses: actions/upload-artifact@v2
-#       with:
-#         name: ${{ matrix.OUT_FILE_NAME}}
-#         path: src/dist/
+  create-packages:
+    needs: test-code
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            OUT_FILE_NAME: windows-exe
+            ARTIFACT_PATH: dist/
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+    - name: Restore cache
+      uses: syphar/restore-virtualenv@v1
+      id: cache-virtualenv
+    - name: Run Pyinstaller
+      run: |
+        pip install psutil
+        cd src/
+        pyinstaller -w --onefile wallet.py --name wallet-app
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.OUT_FILE_NAME}}
+        path: src/dist/
 
-#   test-packages-on-platform:
-#     needs: create-packages
-#     runs-on: ${{ matrix.os }}
-#     strategy:
-#       matrix:
-#         include:
-#           - os: windows-latest
-#             OUT_FILE_NAME: windows-exe
-#     steps:
-#       - uses: actions/download-artifact@v1
-#         with:
-#           name: ${{ matrix.OUT_FILE_NAME}}
-#       - name: Run Windows executable
-#         run: |
-#           cd ${{ matrix.OUT_FILE_NAME}}
-#           ls
-#           chmod 777 wallet-app
-#           ./wallet-app
+  test-packages-on-platform:
+    needs: create-packages
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            OUT_FILE_NAME: windows-exe
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: ${{ matrix.OUT_FILE_NAME}}
+      - name: Run Windows executable
+        run: |
+          cd ${{ matrix.OUT_FILE_NAME}}
+          ls
+          chmod 777 wallet-app
+          ./wallet-app
