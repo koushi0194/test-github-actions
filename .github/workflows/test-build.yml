@@ -49,7 +49,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.OUT_FILE_NAME}}
-        path: migrator/dist/
+        path: src/dist/
 
   test-packages-on-platform:
     needs: create-packages
