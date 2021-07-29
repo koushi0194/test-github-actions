@@ -33,7 +33,6 @@
 import multiprocessing
 import subprocess
 import sys
-import psutil
 
 
 def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
