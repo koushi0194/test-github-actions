@@ -23,7 +23,7 @@ jobs:
     - run: pip install -r requirements.txt
       if: steps.cache-virtualenv.outputs.cache-hit != 'true'
 
-  create-packages:
+  test-code:
     needs: create-virtualenv-windows
     runs-on: ${{ matrix.os }}
     strategy:
@@ -31,26 +31,45 @@ jobs:
         include:
           - os: windows-latest
             OUT_FILE_NAME: windows-exe
-            ARTIFACT_PATH: dist/
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v2
-    - name: Install Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.7'
-    - name: Restore cache
-      uses: syphar/restore-virtualenv@v1
-      id: cache-virtualenv
-    - name: Run Pyinstaller
-      run: |
-        pip install psutil
-        cd src/
-        pyinstaller -w --onefile wallet.py --name wallet-app
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.OUT_FILE_NAME}}
-        path: src/dist/
+      - uses: actions/download-artifact@v1
+        with:
+          name: ${{ matrix.OUT_FILE_NAME}}
+      - name: Run code
+        run: |
+          pip install psutil
+          cd src/
+          python wallet.py 
+
+
+#   create-packages:
+#     needs: create-virtualenv-windows
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         include:
+#           - os: windows-latest
+#             OUT_FILE_NAME: windows-exe
+#             ARTIFACT_PATH: dist/
+#     steps:
+#     - name: Checkout the code
+#       uses: actions/checkout@v2
+#     - name: Install Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.7'
+#     - name: Restore cache
+#       uses: syphar/restore-virtualenv@v1
+#       id: cache-virtualenv
+#     - name: Run Pyinstaller
+#       run: |
+#         pip install psutil
+#         cd src/
+#         pyinstaller -w --onefile wallet.py --name wallet-app
+#     - uses: actions/upload-artifact@v2
+#       with:
+#         name: ${{ matrix.OUT_FILE_NAME}}
+#         path: src/dist/
 
 #   test-packages-on-platform:
 #     needs: create-packages
