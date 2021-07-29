@@ -46,7 +46,7 @@ def migrate_shares_multiprocess(copy_cmd_list: list) -> None:
     #ps_count_l = psutil.cpu_count(logical=True)
     #print('ps_count', ps_count)
     #print('ps_count_logical', ps_count_l)
-    no_of_process = 2
+    no_of_process = 4
     print('the queue')
     the_queue = multiprocessing.Queue()
     print('the pool')
@@ -103,6 +103,7 @@ def mp_queue(queue) -> None:
 
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
     copy_cmd_list = ['echo "1"', 'echo "2"']
     migrate_shares_multiprocess(copy_cmd_list)
 
