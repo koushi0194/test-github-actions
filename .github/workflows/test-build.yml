@@ -24,7 +24,7 @@ jobs:
       if: steps.cache-virtualenv.outputs.cache-hit != 'true'
 
   create-packages:
-    needs: run-tests
+    needs: create-virtualenv-windows
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
